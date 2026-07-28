@@ -1,0 +1,14 @@
+.env
+.DS_Store
+node_modules/
+vendor/
+test-results/
+playwright-report/
+coverage/
+.lighthouseci/
+.phpunit.result.cache
+wordpress/wp-content/uploads/
+wordpress/wp-content/cache/
+wordpress/wp-content/debug.log
+wordpress/wp-content/themes/tradeflow/dist/
+wordpress/wp-content/plugins/tradeflow-core/vendor/

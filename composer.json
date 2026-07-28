@@ -1,0 +1,11 @@
+{
+  "name": "tradeflow/platform",
+  "description": "Development dependencies for the TradeFlow WordPress platform",
+  "type": "project",
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}

@@ -1,0 +1,63 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME:-tradeflow}
+      MYSQL_USER: ${WORDPRESS_DB_USER:-tradeflow}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD:-tradeflow_local}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-tradeflow_root_local}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-tradeflow_root_local}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WORDPRESS_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-tradeflow}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-tradeflow}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-tradeflow_local}
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-1}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ENVIRONMENT_TYPE', 'local');
+        define('WP_MEMORY_LIMIT', '256M');
+        define('DISALLOW_FILE_EDIT', true);
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress/wp-content/plugins/tradeflow-core:/var/www/html/wp-content/plugins/tradeflow-core
+      - ./wordpress/wp-content/themes/tradeflow:/var/www/html/wp-content/themes/tradeflow
+
+  wpcli:
+    image: wordpress:cli-php8.3
+    entrypoint: ["wp"]
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-tradeflow}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-tradeflow}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-tradeflow_local}
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress/wp-content/plugins/tradeflow-core:/var/www/html/wp-content/plugins/tradeflow-core
+      - ./wordpress/wp-content/themes/tradeflow:/var/www/html/wp-content/themes/tradeflow
+    profiles: ["tools"]
+
+volumes:
+  db_data:
+  wordpress_data:

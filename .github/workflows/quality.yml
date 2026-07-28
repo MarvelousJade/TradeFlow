@@ -1,0 +1,59 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer test
+      - name: Lint custom PHP
+        run: find wordpress/wp-content -name '*.php' -print0 | xargs -0 -n1 php -l
+
+  browser-and-lighthouse:
+    runs-on: ubuntu-latest
+    needs: [frontend, php]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: docker compose up -d
+      - name: Install WordPress
+        run: |
+          sleep 15
+          docker compose --profile tools run --rm wpcli core install --url=http://localhost:8080 --title=TradeFlow --admin_user=admin --admin_password=tradeflow_ci --admin_email=admin@example.test
+          docker compose --profile tools run --rm wpcli plugin activate tradeflow-core
+          docker compose --profile tools run --rm wpcli theme activate tradeflow
+          docker compose --profile tools run --rm wpcli rewrite structure '/%postname%/' --hard
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=chromium
+        env:
+          WP_ADMIN_PASSWORD: tradeflow_ci
+      - run: npm run lighthouse:ci
+      - if: always()
+        run: docker compose logs

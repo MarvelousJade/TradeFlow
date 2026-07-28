@@ -15,6 +15,12 @@ final class TradeFlow_REST_Controller
 
     public static function register_routes(): void
     {
+        register_rest_route(self::NAMESPACE, '/health', [
+            'methods' => WP_REST_Server::READABLE,
+            'callback' => [self::class, 'health'],
+            'permission_callback' => '__return_true',
+        ]);
+
         register_rest_route(self::NAMESPACE, '/bootstrap', [
             'methods' => WP_REST_Server::READABLE,
             'callback' => [self::class, 'bootstrap'],
@@ -50,6 +56,28 @@ final class TradeFlow_REST_Controller
             'callback' => [self::class, 'lead_status'],
             'permission_callback' => '__return_true',
         ]);
+    }
+
+    public static function health(): WP_REST_Response|WP_Error
+    {
+        global $wpdb;
+
+        $database_check = $wpdb->get_var('SELECT 1');
+        if ((string) $database_check !== '1') {
+            return new WP_Error(
+                'database_unavailable',
+                __('The database is unavailable.', 'tradeflow'),
+                ['status' => 503]
+            );
+        }
+
+        $response = new WP_REST_Response([
+            'status' => 'ok',
+            'database' => 'connected',
+            'version' => TRADEFLOW_VERSION,
+        ], 200);
+        $response->header('Cache-Control', 'no-store, max-age=0');
+        return $response;
     }
 
     public static function bootstrap(WP_REST_Request $request): WP_REST_Response
@@ -252,7 +280,15 @@ final class TradeFlow_REST_Controller
 
     private static function within_rate_limit(): bool
     {
-        $address = sanitize_text_field((string) ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+        $address = (string) ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+        if ((string) getenv('RENDER') === 'true' && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $forwarded_addresses = explode(',', (string) $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $candidate = trim($forwarded_addresses[0]);
+            if (filter_var($candidate, FILTER_VALIDATE_IP)) {
+                $address = $candidate;
+            }
+        }
+        $address = sanitize_text_field($address);
         $key = 'tf_rate_' . hash('sha256', $address);
         $attempts = (int) get_transient($key);
         $limit = wp_get_environment_type() === 'local' ? 100 : 10;

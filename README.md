@@ -46,6 +46,11 @@ composer test
 
 The local Lighthouse runner writes private reports to `.lighthouseci/reports`. CI runs three Lighthouse CI samples and enforces 90+ performance, accessibility and SEO scores, LCP under 2.5 seconds, CLS under 0.1, and a 200 ms interaction budget.
 
+## Deploy on Render
+
+The repository includes a production multi-stage WordPress image and a Render Blueprint configured for Aiven MySQL, verified TLS, automatic first-run setup, health checks, and persistent media uploads.
+
+Follow [the Render and Aiven deployment guide](docs/DEPLOY_RENDER.md). Render account access, an Aiven service, the database credentials, and the final public URL are required to provision the live environment.
 
 ## Production notes
 

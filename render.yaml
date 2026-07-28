@@ -1,0 +1,83 @@
+services:
+  - type: web
+    name: tradeflow-booking
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.render
+    dockerContext: .
+    autoDeployTrigger: checksPass
+    healthCheckPath: /wp-json/tradeflow/v1/health
+    maxShutdownDelaySeconds: 30
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: WORDPRESS_DB_HOST
+        sync: false
+      - key: WORDPRESS_DB_NAME
+        sync: false
+      - key: WORDPRESS_DB_USER
+        sync: false
+      - key: WORDPRESS_DB_PASSWORD
+        sync: false
+      - key: WORDPRESS_TABLE_PREFIX
+        value: tf_
+      - key: WORDPRESS_DEBUG
+        value: "0"
+      - key: WORDPRESS_AUTH_KEY
+        generateValue: true
+      - key: WORDPRESS_SECURE_AUTH_KEY
+        generateValue: true
+      - key: WORDPRESS_LOGGED_IN_KEY
+        generateValue: true
+      - key: WORDPRESS_NONCE_KEY
+        generateValue: true
+      - key: WORDPRESS_AUTH_SALT
+        generateValue: true
+      - key: WORDPRESS_SECURE_AUTH_SALT
+        generateValue: true
+      - key: WORDPRESS_LOGGED_IN_SALT
+        generateValue: true
+      - key: WORDPRESS_NONCE_SALT
+        generateValue: true
+      - key: TRADEFLOW_DB_SSL
+        value: "1"
+      - key: TRADEFLOW_SITE_URL
+        sync: false
+      - key: TRADEFLOW_SITE_TITLE
+        value: TradeFlow
+      - key: TRADEFLOW_ADMIN_USER
+        sync: false
+      - key: TRADEFLOW_ADMIN_PASSWORD
+        sync: false
+      - key: TRADEFLOW_ADMIN_EMAIL
+        sync: false
+      - key: TRADEFLOW_TIMEZONE
+        value: America/Toronto
+      - key: WORDPRESS_CONFIG_EXTRA
+        value: |
+          define('WP_ENVIRONMENT_TYPE', 'production');
+          define('WP_MEMORY_LIMIT', '256M');
+          define('DISALLOW_FILE_EDIT', true);
+          define('FORCE_SSL_ADMIN', true);
+          define('AUTOMATIC_UPDATER_DISABLED', true);
+
+          $tradeflow_site_url = rtrim((string) getenv('TRADEFLOW_SITE_URL'), '/');
+          if ($tradeflow_site_url !== '') {
+              define('WP_HOME', $tradeflow_site_url);
+              define('WP_SITEURL', $tradeflow_site_url);
+          }
+
+          if ((string) getenv('TRADEFLOW_DB_SSL') === '1') {
+              define('MYSQL_CLIENT_FLAGS', MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_VERIFY_SERVER_CERT);
+          }
+
+          if (
+              isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+              && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https'
+          ) {
+              $_SERVER['HTTPS'] = 'on';
+          }
+    disk:
+      name: tradeflow-uploads
+      mountPath: /var/www/html/wp-content/uploads
+      sizeGB: 1

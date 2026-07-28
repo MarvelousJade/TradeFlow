@@ -1,0 +1,13 @@
+.git
+.github
+.env
+.lighthouseci
+coverage
+node_modules
+playwright-report
+test-results
+vendor
+wordpress/wp-content/cache
+wordpress/wp-content/debug.log
+wordpress/wp-content/themes/tradeflow/dist
+wordpress/wp-content/uploads

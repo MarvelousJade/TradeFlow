@@ -1,10 +1,12 @@
 # Deploy TradeFlow on Render with Aiven MySQL
 
-This deployment runs WordPress as a Docker web service on Render, stores relational data in Aiven for MySQL, and keeps media uploads on a Render persistent disk. The first start installs WordPress, activates the TradeFlow plugin and theme, seeds the MVP content, and configures permalinks.
+This deployment runs WordPress as a free Docker web service on Render and stores relational data in Aiven for MySQL. The first start installs WordPress, activates the TradeFlow plugin and theme, seeds the MVP content, and configures permalinks.
+
+Render Free does not support persistent disks. Leads, appointments, attribution, WordPress content, and settings persist in Aiven MySQL, but uploaded photos are removed whenever the Render instance restarts or redeploys.
 
 ## 1. Create the Aiven database
 
-1. Create an Aiven for MySQL service in the cloud region nearest the Render service.
+1. Create an Aiven for MySQL service using the **Free** plan. Aiven selects the cloud and region for free services.
 2. Keep TLS enabled and note the host, port, database name, username, and password from the Aiven service overview.
 3. Download the project's CA certificate as `aiven-ca.pem`.
 4. Leave Aiven's IP filter open during the first deployment. Restrict it later only if the Render service uses stable outbound IPs.
@@ -47,14 +49,14 @@ After the deploy becomes healthy:
 1. Open the site and complete a test booking with a small JPG, PNG, or WebP.
 2. Sign in at `/wp-admin/`, then confirm the lead appears under **TradeFlow → Leads**.
 3. Assign a technician and change the status to confirm the staff workflow.
-4. Redeploy the same commit and verify the uploaded photo still loads.
+4. Confirm leads and appointments remain available after a redeploy. Uploaded photos are expected to be temporary on Render Free.
 5. Open `/wp-json/tradeflow/v1/health`; it should return `status: ok`.
 
-Set SMTP and GA4/GTM values before treating the environment as production. Render's persistent disk keeps uploads, while Aiven owns database backups and recovery.
+Set SMTP and GA4/GTM values before treating the environment as production. Aiven keeps the relational data and database backups.
 
 ## Operational trade-offs
 
-- Render persistent disks require a paid service and limit the web service to one instance.
-- A disk-backed service does not use zero-downtime deploys, so a short restart window is expected.
-- Only `wp-content/uploads` is writable and persistent. Plugin, theme, and WordPress changes ship through the Docker image.
-- Keep the Aiven database and Render service geographically close to reduce backend latency.
+- Render Free spins down after inactivity and does not preserve `wp-content/uploads`.
+- Plugin, theme, and WordPress changes ship through the Docker image.
+- Aiven Free is a single-node, 1 GB service intended for demos and small workloads.
+- Upgrade Render to a paid service and attach `/var/www/html/wp-content/uploads` as a persistent disk before using photo uploads for real customer work.

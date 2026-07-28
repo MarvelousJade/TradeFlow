@@ -6,6 +6,7 @@ test-results/
 playwright-report/
 coverage/
 .lighthouseci/
+.tools/
 .phpunit.result.cache
 wordpress/wp-content/uploads/
 wordpress/wp-content/cache/

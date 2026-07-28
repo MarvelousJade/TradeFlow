@@ -3,7 +3,7 @@ services:
     name: tradeflow-booking
     runtime: docker
     plan: free
-    dockerfilePath: ./Dockerfile.render
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     autoDeployTrigger: checksPass
     healthCheckPath: /wp-json/tradeflow/v1/health

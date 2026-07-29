@@ -48,7 +48,7 @@ The local Lighthouse runner writes private reports to `.lighthouseci/reports`. C
 
 ## Deploy on Render
 
-The repository includes a production multi-stage WordPress image and a Render Blueprint configured for Aiven MySQL, verified TLS, automatic first-run setup, health checks, and persistent media uploads.
+The repository includes a production multi-stage WordPress image and a free Render Blueprint configured for Aiven MySQL, verified TLS, automatic first-run setup, and health checks. Bookings persist in MySQL; media uploads are ephemeral on Render Free and are intended only for demonstrating the workflow.
 
 Follow [the Render and Aiven deployment guide](docs/DEPLOY_RENDER.md). Render account access, an Aiven service, the database credentials, and the final public URL are required to provision the live environment.
 

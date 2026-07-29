@@ -112,6 +112,7 @@ test('staff can assign a technician and update lead status', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'Admin workflow is covered once on desktop.');
   const password = process.env.WP_ADMIN_PASSWORD;
+  const username = process.env.WP_ADMIN_USER ?? 'admin';
   test.skip(!password, 'Set WP_ADMIN_PASSWORD to run the staff workflow.');
 
   const bootstrapResponse = await request.get(
@@ -140,7 +141,7 @@ test('staff can assign a technician and update lead status', async ({
   const reference = (await created.json()).reference;
 
   await page.goto('/wp-login.php');
-  await page.getByLabel('Username or Email Address').fill('admin');
+  await page.getByLabel('Username or Email Address').fill(username);
   await page.getByLabel('Password', { exact: true }).fill(password!);
   await page.getByRole('button', { name: 'Log In' }).click();
   await page.goto('/wp-admin/admin.php?page=tradeflow-leads');

@@ -2,12 +2,11 @@ services:
   - type: web
     name: tradeflow-booking
     runtime: docker
-    plan: starter
-    dockerfilePath: ./Dockerfile.render
+    plan: free
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     autoDeployTrigger: checksPass
     healthCheckPath: /wp-json/tradeflow/v1/health
-    maxShutdownDelaySeconds: 30
     envVars:
       - key: PORT
         value: "10000"
@@ -77,7 +76,3 @@ services:
           ) {
               $_SERVER['HTTPS'] = 'on';
           }
-    disk:
-      name: tradeflow-uploads
-      mountPath: /var/www/html/wp-content/uploads
-      sizeGB: 1

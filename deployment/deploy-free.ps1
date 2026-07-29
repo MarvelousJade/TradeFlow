@@ -44,7 +44,7 @@ function Invoke-JsonCommand {
 
     $output = & $Command @Arguments
     if ($LASTEXITCODE -ne 0) {
-        throw "Command failed: $Command $($Arguments -join ' ')"
+        throw "Command failed: $([IO.Path]::GetFileName($Command))."
     }
 
     return ($output -join "`n") | ConvertFrom-Json

@@ -29,7 +29,7 @@ For a CLI deployment on Windows, authenticate both CLIs and run:
   -AdminEmail you@example.com
 ```
 
-The script refuses non-free Aiven plans, downloads the project CA into the ignored `.tools` directory, generates all application secrets, creates a Render Free service, and copies the generated WordPress administrator password to the Windows clipboard. It never writes database credentials or application secrets into tracked files.
+The script refuses non-free Aiven plans, downloads the project CA into the ignored `.tools` directory, assigns a generated password to the Aiven primary user, generates all application secrets, creates a Render Free service, and copies the generated WordPress administrator password to the Windows clipboard. It never writes database credentials or application secrets into tracked files.
 
 Render prompts for every value marked `sync: false`:
 

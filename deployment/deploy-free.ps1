@@ -99,19 +99,18 @@ if ($encodedCredentials.Count -ne 2) {
 $databaseHost = "$($databaseUri.Host):$($databaseUri.Port)"
 $databaseName = [Uri]::UnescapeDataString($databaseUri.AbsolutePath.TrimStart('/'))
 $databaseUser = [Uri]::UnescapeDataString($encodedCredentials[0])
-$databasePassword = [Uri]::UnescapeDataString($encodedCredentials[1])
 
 $credentialDirectory = Join-Path $repositoryRoot '.tools\aiven-mysql'
 New-Item -ItemType Directory -Path $credentialDirectory -Force | Out-Null
-& $AivenCli service user-creds-download $AivenService `
+$credentialDownloadOutput = & $AivenCli service user-creds-download $AivenService `
     --project $AivenProject `
     --username $databaseUser `
-    --target-directory $credentialDirectory
+    --target-directory $credentialDirectory 2>&1
 $credentialDownloadExitCode = $LASTEXITCODE
 
 $caPath = Join-Path $credentialDirectory 'ca.pem'
 if (-not (Test-Path -LiteralPath $caPath -PathType Leaf)) {
-    throw "Aiven CA certificate download failed; no certificate was written to $caPath."
+    throw "Aiven CA certificate download failed: $($credentialDownloadOutput -join ' ')"
 }
 if ($credentialDownloadExitCode -ne 0) {
     Write-Warning 'Aiven downloaded the CA without a client certificate and key; password authentication will be used.'
@@ -130,6 +129,15 @@ $existingService = @($existingServices) | Where-Object {
 }
 if ($existingService) {
     throw "Render service '$RenderService' already exists; refusing to create a duplicate."
+}
+
+$databasePassword = New-Secret -ByteCount 24
+& $AivenCli service user-password-reset $AivenService `
+    --project $AivenProject `
+    --username $databaseUser `
+    --new-password $databasePassword
+if ($LASTEXITCODE -ne 0) {
+    throw 'Aiven database password update failed.'
 }
 
 $adminPassword = New-Secret -ByteCount 24

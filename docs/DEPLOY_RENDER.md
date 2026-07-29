@@ -21,6 +21,16 @@ mysql-project.aivencloud.com:24876
 
 Push this repository to GitHub, GitLab, or Bitbucket. In Render, choose **New → Blueprint**, connect the repository, and use the root-level `render.yaml`.
 
+For a CLI deployment on Windows, authenticate both CLIs and run:
+
+```powershell
+.\deployment\deploy-free.ps1 `
+  -AivenProject your-aiven-project `
+  -AdminEmail you@example.com
+```
+
+The script refuses non-free Aiven plans, downloads the project CA into the ignored `.tools` directory, generates all application secrets, creates a Render Free service, and copies the generated WordPress administrator password to the Windows clipboard. It never writes database credentials or application secrets into tracked files.
+
 Render prompts for every value marked `sync: false`:
 
 | Variable                   | Value                                         |

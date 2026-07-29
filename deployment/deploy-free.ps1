@@ -107,13 +107,14 @@ New-Item -ItemType Directory -Path $credentialDirectory -Force | Out-Null
     --project $AivenProject `
     --username $databaseUser `
     --target-directory $credentialDirectory
-if ($LASTEXITCODE -ne 0) {
-    throw 'Aiven CA certificate download failed.'
-}
+$credentialDownloadExitCode = $LASTEXITCODE
 
 $caPath = Join-Path $credentialDirectory 'ca.pem'
 if (-not (Test-Path -LiteralPath $caPath -PathType Leaf)) {
-    throw "Aiven CA certificate not found at $caPath."
+    throw "Aiven CA certificate download failed; no certificate was written to $caPath."
+}
+if ($credentialDownloadExitCode -ne 0) {
+    Write-Warning 'Aiven downloaded the CA without a client certificate and key; password authentication will be used.'
 }
 
 $existingServices = Invoke-JsonCommand -Command $RenderCli -Arguments @(

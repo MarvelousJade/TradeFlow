@@ -34,7 +34,12 @@ const initialForm: BookingForm = {
   website: '',
 };
 
-const stepLabels = ['Service & area', 'Job details', 'Arrival window', 'Contact'];
+const stepLabels = [
+  'Service & area',
+  'Job details',
+  'Arrival window',
+  'Contact',
+];
 
 export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
   const [data, setData] = useState<BootstrapData | null>(null);
@@ -47,9 +52,13 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
   const [eligibility, setEligibility] = useState('');
   const [result, setResult] = useState<BookingResponse | null>(null);
   const started = useRef(false);
+  const eligibilityRevision = useRef(0);
+  const [bootstrapAttempt, setBootstrapAttempt] = useState(0);
 
   useEffect(() => {
     let active = true;
+    setLoading(true);
+    setError('');
     fetchBootstrap(serviceSlug, areaSlug)
       .then((payload) => {
         if (!active) return;
@@ -78,8 +87,9 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
       });
     return () => {
       active = false;
+      eligibilityRevision.current += 1;
     };
-  }, [serviceSlug, areaSlug]);
+  }, [serviceSlug, areaSlug, bootstrapAttempt]);
 
   useEffect(() => {
     trackEvent('tradeflow_booking_step_view', {
@@ -124,7 +134,12 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
       return next;
     });
     setError('');
-    if (key === 'postalCode' || key === 'areaId') setEligibility('');
+    if (key === 'postalCode' || key === 'areaId' || key === 'serviceId') {
+      // An obsolete request owns neither feedback nor the pending indicator.
+      eligibilityRevision.current += 1;
+      setSubmitting(false);
+      setEligibility('');
+    }
   };
 
   const validateStep = (): FieldErrors => {
@@ -137,8 +152,7 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
     }
     if (step === 1 && form.details.trim().length < 12)
       errors.details = 'Add at least 12 characters about the work needed.';
-    if (step === 2 && !form.slot)
-      errors.slot = 'Choose an appointment window.';
+    if (step === 2 && !form.slot) errors.slot = 'Choose an appointment window.';
     if (step === 3) {
       if (form.customerName.trim().length < 2)
         errors.customerName = 'Enter your full name.';
@@ -157,15 +171,18 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
     if (Object.keys(errors).length) return;
 
     if (step === 0) {
+      const revision = ++eligibilityRevision.current;
       setSubmitting(true);
       try {
         const response = await checkEligibility(form.areaId, form.postalCode);
+        if (revision !== eligibilityRevision.current) return;
         setEligibility(response.message);
         if (!response.eligible) {
           setFieldErrors({ postalCode: response.message });
           return;
         }
       } catch (caught) {
+        if (revision !== eligibilityRevision.current) return;
         setError(
           caught instanceof Error
             ? caught.message
@@ -173,7 +190,7 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
         );
         return;
       } finally {
-        setSubmitting(false);
+        if (revision === eligibilityRevision.current) setSubmitting(false);
       }
     }
 
@@ -191,11 +208,7 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
     setSubmitting(true);
     setError('');
     try {
-      const response = await submitBooking(
-        form,
-        data.nonce,
-        getAttribution(),
-      );
+      const response = await submitBooking(form, data.nonce, getAttribution());
       setResult(response);
       trackEvent('tradeflow_booking_complete', {
         reference: response.reference,
@@ -251,6 +264,13 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
       <div className="tf-booking tf-success" role="alert">
         <h3>Booking is temporarily unavailable.</h3>
         <p>{error || 'Call the local team and we will help you book.'}</p>
+        <button
+          className="tf-button"
+          type="button"
+          onClick={() => setBootstrapAttempt((attempt) => attempt + 1)}
+        >
+          Retry loading
+        </button>
       </div>
     );
   }
@@ -428,9 +448,7 @@ function ServiceStep({
               </option>
             ))}
           </select>
-          {errors.areaId && (
-            <p className="tf-field-error">{errors.areaId}</p>
-          )}
+          {errors.areaId && <p className="tf-field-error">{errors.areaId}</p>}
         </div>
         <div className="tf-field">
           <label htmlFor="tf-postal">Postal code</label>
@@ -487,9 +505,7 @@ function DetailsStep({
           placeholder="For example: the basement floor drain started backing up this morning…"
           aria-invalid={Boolean(errors.details)}
         />
-        {errors.details && (
-          <p className="tf-field-error">{errors.details}</p>
-        )}
+        {errors.details && <p className="tf-field-error">{errors.details}</p>}
       </div>
       <label className="tf-upload">
         <input
@@ -539,7 +555,11 @@ function PhotoPreview({ photo, remove }: { photo: File; remove: () => void }) {
   return (
     <span className="tf-photo">
       {url && <img src={url} alt="" />}
-      <button type="button" onClick={remove} aria-label={`Remove ${photo.name}`}>
+      <button
+        type="button"
+        onClick={remove}
+        aria-label={`Remove ${photo.name}`}
+      >
         <Icon name="close" />
       </button>
     </span>
@@ -677,4 +697,3 @@ function ContactStep({
     </>
   );
 }
-

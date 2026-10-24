@@ -11,6 +11,17 @@ TradeFlow is a focused service-booking platform for local trade businesses. It c
 5. WordPress sends customer confirmation and status emails.
 6. UTM, referrer, landing-page and GA4/GTM events preserve marketing attribution.
 
+## Try the booking demo (no WordPress required)
+
+```bash
+npm ci
+npm run demo
+```
+
+Open `http://127.0.0.1:4173/demo/`. This runs the actual booking widget and theme styles against a **disposable development API**. Use Toronto postal code `M5V 2T6`, fictitious job/contact details, and the sample arrival window. Success shows `TF-DEMO`; nothing is saved and no email is sent. It is not a replacement for the WordPress backend.
+
+The widget ignores outdated eligibility responses after address edits, offers Retry loading on startup failure, and retains the in-memory draft after failed submission. Refreshing still discards the draft.
+
 ## Run locally
 
 Requirements: Docker Desktop, Node.js 20+, and npm.
@@ -37,7 +48,10 @@ Visit `http://localhost:8080`. Activation seeds three services and three Greater
 
 ```bash
 npm test
+npm run typecheck
 npm run build
+npx playwright install chromium
+npm run test:widget # desktop/mobile widget + disposable API; no Docker
 npm run test:e2e
 npm run lighthouse
 composer install
@@ -51,6 +65,13 @@ The local Lighthouse runner writes private reports to `.lighthouseci/reports`. C
 The repository includes a production multi-stage WordPress image and a free Render Blueprint configured for Aiven MySQL, verified TLS, automatic first-run setup, and health checks. Bookings persist in MySQL; media uploads are ephemeral on Render Free and are intended only for demonstrating the workflow.
 
 Follow [the Render and Aiven deployment guide](docs/DEPLOY_RENDER.md). Render account access, an Aiven service, the database credentials, and the final public URL are required to provision the live environment.
+
+## Technical documentation
+
+- [Purpose, acceptance criteria, references, architecture and journal](docs/ENGINEERING.md)
+- [Defect investigations and regression evidence](docs/INVESTIGATIONS.md)
+- [Walkthrough, verification and interview guide](docs/INTERVIEW.md)
+- [Changelog](CHANGELOG.md)
 
 ## Production notes
 

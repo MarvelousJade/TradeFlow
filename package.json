@@ -6,6 +6,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
+    "demo": "vite --config demo/vite.config.ts",
+    "test:widget": "playwright test --config playwright.widget.config.ts",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

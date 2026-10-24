@@ -39,6 +39,9 @@ Bootstrap retry reruns the existing guarded Effect using an explicit attempt cou
 - PHP and Docker commands unavailable; no local WordPress/backend verification claimed. Existing generated reports and `.tools` are ignored and not treated as evidence for this release.
 - Code inspection identified a plausible stale eligibility response: input fields remain editable during `checkEligibility`, while its completion unconditionally advances the step. Next stage will first reproduce this with a deferred response test.
 
+- Demo/browser stage: added development-only Vite HTTP middleware and synthetic fixture, separate from production build. Actual widget/theme run with desktop and Pixel 7 emulation; 8 passed / 0 failed in 14.2 s, typecheck passed. Tests cover empty postal, outside coverage, startup failure/retry, delayed approval after edit, successful request and draft-preserving retry. No WordPress calls or stored lead data. First runner setup exposed JSON import requirements and absent browser binaries; moved fixture to TypeScript and installed Chromium, then reran successfully.
+- Local main contains an existing merge commit (`fcf62c7`) not on the starting branch. Final integration must merge the completed feature branch into existing main, not reset it or rewrite history.
+
 ## Verification approach
 
 Component tests isolate ordering using deferred promises, not sleep-based races. Browser tests run actual React modules and theme styles with route-controlled APIs in desktop and mobile Chromium. Keep raw run summaries in `docs/evidence/`; do not count separate runs as one suite. Existing WordPress integration and Lighthouse checks still require the documented Docker stack. No visual or human testing claim without explicit evidence.

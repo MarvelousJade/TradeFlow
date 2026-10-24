@@ -21,7 +21,9 @@
     "wordpress/wp-content/themes/tradeflow/assets/src",
     "tests",
     "vite.config.ts",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "playwright.widget.config.ts",
+    "demo"
   ]
 }
 

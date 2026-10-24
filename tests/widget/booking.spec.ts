@@ -27,6 +27,10 @@ test('demo completes with real widget and disposable API', async ({ page }) => {
     page.getByRole('heading', { name: 'Your request is in.' }),
   ).toBeVisible();
   await expect(page.getByText('TF-DEMO', { exact: true })).toBeVisible();
+  await page.screenshot({
+    path: test.info().outputPath('booking-success.png'),
+    fullPage: true,
+  });
 });
 
 test('read errors recover and outside coverage stays on address step', async ({

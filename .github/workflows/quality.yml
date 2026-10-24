@@ -16,7 +16,17 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run typecheck
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:widget
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: widget-browser-report
+          path: |
+            playwright-report/
+            test-results/
 
   php:
     runs-on: ubuntu-latest

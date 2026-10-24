@@ -1,0 +1,51 @@
+npm notice run tradeflow@1.0.0 test:widget
+npm notice run playwright test --config playwright.widget.config.ts --project=desktop --grep failed submission
+[WebServer] npm notice run tradeflow@1.0.0 demo
+[WebServer] npm notice run vite --config demo/vite.config.ts
+
+Running 1 test using 1 worker
+
+  x  1 [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry (10.9s)
+
+
+  1) [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Email', { exact: true })
+    Expected: "demo@example.test"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" with timeout 5000ms
+      - waiting for getByLabel('Email', { exact: true })
+        14 × locator resolved to <input value="" type="email" id="tf-email" autocomplete="email" aria-invalid="false"/>
+           - unexpected value ""
+
+
+      103 |   await expect(page.getByRole('alert')).toHaveText('Please retry later.');
+      104 |   expect(attempts).toBe(1); // No automatic retry of a potentially accepted write.
+    > 105 |   await expect(page.getByLabel('Email', { exact: true })).toHaveValue(
+          |                                                           ^
+      106 |     'demo@example.test',
+      107 |   );
+      108 |   await page.getByRole('button', { name: 'Back', exact: true }).click();
+        at E:\C++ PROJECTS\TradeFlow\tests\widget\booking.spec.ts:105:59
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\booking-failed-submission--38feb-reserve-the-draft-for-retry-desktop\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\booking-failed-submission--38feb-reserve-the-draft-for-retry-desktop\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\booking-failed-submission--38feb-reserve-the-draft-for-retry-desktop\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\booking-failed-submission--38feb-reserve-the-draft-for-retry-desktop\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry 

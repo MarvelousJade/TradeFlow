@@ -86,8 +86,10 @@ test('failed submission and back navigation preserve the draft for retry', async
   page,
 }) => {
   let attempts = 0;
+  const submitted: string[] = [];
   await page.route('**/demo-api/leads', async (route) => {
     attempts++;
+    submitted.push(route.request().postData() ?? '');
     if (attempts === 1)
       await route.fulfill({
         status: 503,
@@ -119,4 +121,19 @@ test('failed submission and back navigation preserve the draft for retry', async
     page.getByRole('heading', { name: 'Your request is in.' }),
   ).toBeVisible();
   expect(attempts).toBe(2);
+  for (const body of submitted) {
+    for (const [field, value] of Object.entries({
+      customer_name: 'Demo Customer',
+      email: 'demo@example.test',
+      phone: '4165550198',
+      postal_code: 'M5V 2T6',
+      details: 'Basement drain backs up when laundry runs.',
+      service_id: '1',
+      area_id: '2',
+      slot_start: bootstrap.slots[0].start,
+      slot_end: bootstrap.slots[0].end,
+    })) {
+      expect(body).toContain(`name="${field}"\r\n\r\n${value}\r\n`);
+    }
+  }
 });

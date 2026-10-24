@@ -1,0 +1,4 @@
+# Evidence hashes use normalized LF bytes on every checkout.
+docs/evidence/*.txt text eol=lf
+docs/evidence/*.json text eol=lf
+docs/evidence/SHA256SUMS text eol=lf

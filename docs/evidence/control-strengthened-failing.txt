@@ -8,7 +8,7 @@ Running 1 test using 1 worker
   x  1 [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry (10.9s)
 
 
-  1) [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry 
+  1) [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry
 
     Error: expect(locator).toHaveValue(expected) failed
 
@@ -48,4 +48,4 @@ Running 1 test using 1 worker
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
   1 failed
-    [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry 
+    [desktop] › tests\widget\booking.spec.ts:85:1 › failed submission and back navigation preserve the draft for retry

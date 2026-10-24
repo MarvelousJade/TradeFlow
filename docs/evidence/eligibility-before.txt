@@ -1,352 +1,351 @@
 npm notice run tradeflow@1.0.0 test
 npm notice run vitest run
 
-[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mE:/C++ PROJECTS/TradeFlow/wordpress/wp-content/themes/tradeflow/assets/src[39m
+ RUN  v3.2.7 E:/C++ PROJECTS/TradeFlow/wordpress/wp-content/themes/tradeflow/assets/src
 
- [32m✓[39m attribution.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 14[2mms[22m[39m
- [31m❯[39m BookingWidget.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 275[2mms[22m[39m
-   [32m✓[39m BookingWidget[2m > [22mloads location-specific services and validates the postal code[32m 126[2mms[22m[39m
-[31m   [31m×[31m BookingWidget[2m > [22mignores an obsolete eligibility success after a postal edit[39m[32m 59[2mms[22m[39m
-[31m     → Unable to find an element with the text: Where can we help?. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+ ✓ attribution.test.ts (2 tests) 14ms
+ ❯ BookingWidget.test.tsx (5 tests | 3 failed) 275ms
+   ✓ BookingWidget > loads location-specific services and validates the postal code 126ms
+   × BookingWidget > ignores an obsolete eligibility success after a postal edit 59ms
+     → Unable to find an element with the text: Where can we help?. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
 
 Ignored nodes: comments, script, style
-[36m<body>[31m
-  [36m<div>[31m
-    [36m<div[31m
-      [33mclass[31m=[32m"tf-booking"[31m
-    [36m>[31m
-      [36m<div[31m
-        [33mclass[31m=[32m"tf-booking__header"[31m
-      [36m>[31m
-        [36m<div>[31m
-          [36m<strong>[31m
-            [0mBook[0m
-          [36m</strong>[31m
-          [36m<p>[31m
-            [0mJob details[0m
-          [36m</p>[31m
-        [36m</div>[31m
-        [36m<span[31m
-          [33mclass[31m=[32m"tf-booking__step-count"[31m
-        [36m>[31m
-          [0m2[0m
-          [0m / [0m
-          [0m4[0m
-        [36m</span>[31m
-      [36m</div>[31m
-      [36m<div[31m
-        [33maria-hidden[31m=[32m"true"[31m
-        [33mclass[31m=[32m"tf-progress"[31m
-      [36m>[31m
-        [36m<span[31m
-          [33mstyle[31m=[32m"width: 50%;"[31m
-        [36m/>[31m
-      [36m</div>[31m
-      [36m<div[31m
-        [33mclass[31m=[32m"tf-booking__body"[31m
-      [36m>[31m
-        [36m<h3>[31m
-          [0mWhat is going on?[0m
-        [36m</h3>[31m
-        [36m<p[31m
-          [33mclass[31m=[32m"tf-booking__intro"[31m
-        [36m>[31m
-          [0mA little context helps us send the right person and equipment.[0m
-        [36m</p>[31m
-        [36m<div[31m
-          [33mclass[31m=[32m"tf-field"[31m
-        [36m>[31m
-          [36m<label[31m
-            [33mfor[31m=[32m"tf-details"[31m
-          [36m>[31m
-            [0mJob details [0m
-            [36m<span>[31m
-              [0m(required)[0m
-            [36m</span>[31m
-          [36m</label>[31m
-          [36m<textarea[31m
-            [33maria-invalid[31m=[32m"false"[31m
-            [33mid[31m=[32m"tf-details"[31m
-            [33mplaceholder[31m=[32m"For example: the basement floor drain started backing up this morning…"[31m
-          [36m/>[31m
-        [36m</div>[31m
-        [36m<label[31m
-          [33mclass[31m=[32m"tf-upload"[31m
-        [36m>[31m
-          [36m<input[31m
-            [33maccept[31m=[32m"image/jpeg,image/png,image/webp"[31m
-            [33mmultiple[31m=[32m""[31m
-            [33mtype[31m=[32m"file"[31m
-          [36m/>[31m
-          [36m<svg[31m
-            [33maria-hidden[31m=[32m"true"[31m
-            [33mfill[31m=[32m"none"[31m
-            [33mstroke[31m=[32m"currentColor"[31m
-            [33mstroke-linecap[31m=[32m"round"[31m
-            [33mstroke-linejoin[31m=[32m"round"[31m
-            [33mstroke-width[31m=[32m"1.8"[31m
-            [33mviewBox[31m=[32m"0 0 24 24"[31m
-          [36m>[31m
-            [36m<path[31m
-              [33md[31m=[32m"M5 7h3l1.5-2h5L16 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"[31m
-            [36m/>[31m
-            [36m<circle[31m
-              [33mcx[31m=[32m"12"[31m
-              [33mcy[31m=[32m"13"[31m
-              [33mr[31m=[32m"3"[31m
-            [36m/>[31m
-          [36m</svg>[31m
-          [36m<strong>[31m
-            [0mAdd helpful photos[0m
-          [36m</strong>[31m
-          [36m<span>[31m
-            [0mUp to [0m
-            [0m3[0m
-            [0m JPG, PNG, or WebP files · 5 MB each[0m
-          [36m</span>[31m
-        [36m</label>[31m
-      [36m</div>[31m
-      [36m<div[31m
-        [33mclass[31m=[32m"tf-booking__footer"[31m
-      [36m>[31m
-        [36m<button[31m
-          [33mclass[31m=[32m"tf-link-button"[31m
-          [33mtype[31m=[32m"button"[31m
-        [36m>[31m
-          [0mBack[0m
-        [36m</button>[31m
-        [36m<button[31m
-          [33mclass[31m=[32m"tf-button"[31m
-          [33mtype[31m=[32m"button"[31m
-        [36m>[31m
-          [0mContinue[0m
-          [36m<svg[31m
-            [33maria-hidden[31m=[32m"true"[31m
-            [33mfill[31m=[32m"none"[31m
-            [33mstroke[31m=[32m"currentColor"[31m
-            [33mstroke-linecap[31m=[32m"round"[31m
-            [33mstroke-linejoin[31m=[32m"round"[31m
-            [33mstroke-width[31m=[32m"1.8"[31m
-            [33mviewBox[31m=[32m"0 0 24 24"[31m
-          [36m>[31m
-            [36m<path[31m
-              [33md[31m=[32m"M5 12h14m-6-6 6 6-6 6"[31m
-            [36m/>[31m
-          [36m</svg>[31m
-        [36m</button>[31m
-      [36m</div>[31m
-    [36m</div>[31m
-  [36m</div>[31m
-[36m</body>[31m[39m
-[31m   [31m×[31m BookingWidget[2m > [22mignores an obsolete eligibility ineligible after a postal edit[39m[32m 30[2mms[22m[39m
-[31m     → [2mexpect([22m[31melement[31m[2m).not.toBeInTheDocument()[22m
+<body>
+  <div>
+    <div
+      class="tf-booking"
+    >
+      <div
+        class="tf-booking__header"
+      >
+        <div>
+          <strong>
+            Book
+          </strong>
+          <p>
+            Job details
+          </p>
+        </div>
+        <span
+          class="tf-booking__step-count"
+        >
+          2
+           /
+          4
+        </span>
+      </div>
+      <div
+        aria-hidden="true"
+        class="tf-progress"
+      >
+        <span
+          style="width: 50%;"
+        />
+      </div>
+      <div
+        class="tf-booking__body"
+      >
+        <h3>
+          What is going on?
+        </h3>
+        <p
+          class="tf-booking__intro"
+        >
+          A little context helps us send the right person and equipment.
+        </p>
+        <div
+          class="tf-field"
+        >
+          <label
+            for="tf-details"
+          >
+            Job details
+            <span>
+              (required)
+            </span>
+          </label>
+          <textarea
+            aria-invalid="false"
+            id="tf-details"
+            placeholder="For example: the basement floor drain started backing up this morning…"
+          />
+        </div>
+        <label
+          class="tf-upload"
+        >
+          <input
+            accept="image/jpeg,image/png,image/webp"
+            multiple=""
+            type="file"
+          />
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M5 7h3l1.5-2h5L16 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"
+            />
+            <circle
+              cx="12"
+              cy="13"
+              r="3"
+            />
+          </svg>
+          <strong>
+            Add helpful photos
+          </strong>
+          <span>
+            Up to
+            3
+             JPG, PNG, or WebP files · 5 MB each
+          </span>
+        </label>
+      </div>
+      <div
+        class="tf-booking__footer"
+      >
+        <button
+          class="tf-link-button"
+          type="button"
+        >
+          Back
+        </button>
+        <button
+          class="tf-button"
+          type="button"
+        >
+          Continue
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M5 12h14m-6-6 6 6-6 6"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+   × BookingWidget > ignores an obsolete eligibility ineligible after a postal edit 30ms
+     → expect(element).not.toBeInTheDocument()
 
-[31mexpected document not to contain element, found <p
+expected document not to contain element, found <p
   class="tf-field-error"
   id="tf-postal-error"
 >
   Obsolete coverage
-</p> instead[31m[39m
-[31m   [31m×[31m BookingWidget[2m > [22mignores an obsolete eligibility network error after a postal edit[39m[32m 33[2mms[22m[39m
-[31m     → [2mexpect([22m[31melement[31m[2m).not.toBeInTheDocument()[22m
+</p> instead
+   × BookingWidget > ignores an obsolete eligibility network error after a postal edit 33ms
+     → expect(element).not.toBeInTheDocument()
 
-[31mexpected document not to contain element, found <div
+expected document not to contain element, found <div
   class="tf-form-alert"
   role="alert"
 >
   Obsolete failure
-</div> instead[31m[39m
-   [32m✓[39m BookingWidget[2m > [22mcontinues after an eligible postal-code response[32m 26[2mms[22m[39m
+</div> instead
+   ✓ BookingWidget > continues after an eligible postal-code response 26ms
 
-[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
 
-[41m[1m FAIL [22m[49m BookingWidget.test.tsx[2m > [22mBookingWidget[2m > [22mignores an obsolete eligibility success after a postal edit
-[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: Where can we help?. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+ FAIL  BookingWidget.test.tsx > BookingWidget > ignores an obsolete eligibility success after a postal edit
+TestingLibraryElementError: Unable to find an element with the text: Where can we help?. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
 
 Ignored nodes: comments, script, style
-[36m<body>[31m
-  [36m<div>[31m
-    [36m<div[31m
-      [33mclass[31m=[32m"tf-booking"[31m
-    [36m>[31m
-      [36m<div[31m
-        [33mclass[31m=[32m"tf-booking__header"[31m
-      [36m>[31m
-        [36m<div>[31m
-          [36m<strong>[31m
-            [0mBook[0m
-          [36m</strong>[31m
-          [36m<p>[31m
-            [0mJob details[0m
-          [36m</p>[31m
-        [36m</div>[31m
-        [36m<span[31m
-          [33mclass[31m=[32m"tf-booking__step-count"[31m
-        [36m>[31m
-          [0m2[0m
-          [0m / [0m
-          [0m4[0m
-        [36m</span>[31m
-      [36m</div>[31m
-      [36m<div[31m
-        [33maria-hidden[31m=[32m"true"[31m
-        [33mclass[31m=[32m"tf-progress"[31m
-      [36m>[31m
-        [36m<span[31m
-          [33mstyle[31m=[32m"width: 50%;"[31m
-        [36m/>[31m
-      [36m</div>[31m
-      [36m<div[31m
-        [33mclass[31m=[32m"tf-booking__body"[31m
-      [36m>[31m
-        [36m<h3>[31m
-          [0mWhat is going on?[0m
-        [36m</h3>[31m
-        [36m<p[31m
-          [33mclass[31m=[32m"tf-booking__intro"[31m
-        [36m>[31m
-          [0mA little context helps us send the right person and equipment.[0m
-        [36m</p>[31m
-        [36m<div[31m
-          [33mclass[31m=[32m"tf-field"[31m
-        [36m>[31m
-          [36m<label[31m
-            [33mfor[31m=[32m"tf-details"[31m
-          [36m>[31m
-            [0mJob details [0m
-            [36m<span>[31m
-              [0m(required)[0m
-            [36m</span>[31m
-          [36m</label>[31m
-          [36m<textarea[31m
-            [33maria-invalid[31m=[32m"false"[31m
-            [33mid[31m=[32m"tf-details"[31m
-            [33mplaceholder[31m=[32m"For example: the basement floor drain started backing up this morning…"[31m
-          [36m/>[31m
-        [36m</div>[31m
-        [36m<label[31m
-          [33mclass[31m=[32m"tf-upload"[31m
-        [36m>[31m
-          [36m<input[31m
-            [33maccept[31m=[32m"image/jpeg,image/png,image/webp"[31m
-            [33mmultiple[31m=[32m""[31m
-            [33mtype[31m=[32m"file"[31m
-          [36m/>[31m
-          [36m<svg[31m
-            [33maria-hidden[31m=[32m"true"[31m
-            [33mfill[31m=[32m"none"[31m
-            [33mstroke[31m=[32m"currentColor"[31m
-            [33mstroke-linecap[31m=[32m"round"[31m
-            [33mstroke-linejoin[31m=[32m"round"[31m
-            [33mstroke-width[31m=[32m"1.8"[31m
-            [33mviewBox[31m=[32m"0 0 24 24"[31m
-          [36m>[31m
-            [36m<path[31m
-              [33md[31m=[32m"M5 7h3l1.5-2h5L16 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"[31m
-            [36m/>[31m
-            [36m<circle[31m
-              [33mcx[31m=[32m"12"[31m
-              [33mcy[31m=[32m"13"[31m
-              [33mr[31m=[32m"3"[31m
-            [36m/>[31m
-          [36m</svg>[31m
-          [36m<strong>[31m
-            [0mAdd helpful photos[0m
-          [36m</strong>[31m
-          [36m<span>[31m
-            [0mUp to [0m
-            [0m3[0m
-            [0m JPG, PNG, or WebP files · 5 MB each[0m
-          [36m</span>[31m
-        [36m</label>[31m
-      [36m</div>[31m
-      [36m<div[31m
-        [33mclass[31m=[32m"tf-booking__footer"[31m
-      [36m>[31m
-        [36m<button[31m
-          [33mclass[31m=[32m"tf-link-button"[31m
-          [33mtype[31m=[32m"button"[31m
-        [36m>[31m
-          [0mBack[0m
-        [36m</button>[31m
-        [36m<button[31m
-          [33mclass[31m=[32m"tf-button"[31m
-          [33mtype[31m=[32m"button"[31m
-        [36m>[31m
-          [0mContinue[0m
-          [36m<svg[31m
-            [33maria-hidden[31m=[32m"true"[31m
-            [33mfill[31m=[32m"none"[31m
-            [33mstroke[31m=[32m"currentColor"[31m
-            [33mstroke-linecap[31m=[32m"round"[31m
-            [33mstroke-linejoin[31m=[32m"round"[31m
-            [33mstroke-width[31m=[32m"1.8"[31m
-            [33mviewBox[31m=[32m"0 0 24 24"[31m
-          [36m>[31m
-            [36m<path[31m
-              [33md[31m=[32m"M5 12h14m-6-6 6 6-6 6"[31m
-            [36m/>[31m
-          [36m</svg>[31m
-        [36m</button>[31m
-      [36m</div>[31m
-    [36m</div>[31m
-  [36m</div>[31m
-[36m</body>[31m[39m
-[90m [2m❯[22m Object.getElementError ../../../../../../node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
-[90m [2m❯[22m ../../../../../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
-[90m [2m❯[22m ../../../../../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
-[90m [2m❯[22m ../../../../../../node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
-[36m [2m❯[22m BookingWidget.test.tsx:[2m110:21[22m[39m
-    [90m108| [39m        }) })[33m;[39m
-    [90m109| [39m      })[33m;[39m
-    [90m110| [39m      expect(screen.getByText('Where can we help?')).toBeInTheDocument…
-    [90m   | [39m                    [31m^[39m
-    [90m111| [39m      [34mexpect[39m(postal)[33m.[39m[34mtoHaveValue[39m([32m'L5B 1M2'[39m)[33m;[39m
-    [90m112| [39m      [34mexpect[39m(screen[33m.[39m[34mqueryByText[39m([36m/Obsolete/[39m))[33m.[39mnot[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+<body>
+  <div>
+    <div
+      class="tf-booking"
+    >
+      <div
+        class="tf-booking__header"
+      >
+        <div>
+          <strong>
+            Book
+          </strong>
+          <p>
+            Job details
+          </p>
+        </div>
+        <span
+          class="tf-booking__step-count"
+        >
+          2
+           /
+          4
+        </span>
+      </div>
+      <div
+        aria-hidden="true"
+        class="tf-progress"
+      >
+        <span
+          style="width: 50%;"
+        />
+      </div>
+      <div
+        class="tf-booking__body"
+      >
+        <h3>
+          What is going on?
+        </h3>
+        <p
+          class="tf-booking__intro"
+        >
+          A little context helps us send the right person and equipment.
+        </p>
+        <div
+          class="tf-field"
+        >
+          <label
+            for="tf-details"
+          >
+            Job details
+            <span>
+              (required)
+            </span>
+          </label>
+          <textarea
+            aria-invalid="false"
+            id="tf-details"
+            placeholder="For example: the basement floor drain started backing up this morning…"
+          />
+        </div>
+        <label
+          class="tf-upload"
+        >
+          <input
+            accept="image/jpeg,image/png,image/webp"
+            multiple=""
+            type="file"
+          />
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M5 7h3l1.5-2h5L16 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"
+            />
+            <circle
+              cx="12"
+              cy="13"
+              r="3"
+            />
+          </svg>
+          <strong>
+            Add helpful photos
+          </strong>
+          <span>
+            Up to
+            3
+             JPG, PNG, or WebP files · 5 MB each
+          </span>
+        </label>
+      </div>
+      <div
+        class="tf-booking__footer"
+      >
+        <button
+          class="tf-link-button"
+          type="button"
+        >
+          Back
+        </button>
+        <button
+          class="tf-button"
+          type="button"
+        >
+          Continue
+          <svg
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M5 12h14m-6-6 6 6-6 6"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError ../../../../../../node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../../../../node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../../../../node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../../../../node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ BookingWidget.test.tsx:110:21
+    108|         }) });
+    109|       });
+    110|       expect(screen.getByText('Where can we help?')).toBeInTheDocument…
+       |                     ^
+    111|       expect(postal).toHaveValue('L5B 1M2');
+    112|       expect(screen.queryByText(/Obsolete/)).not.toBeInTheDocument();
 
-[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
 
-[41m[1m FAIL [22m[49m BookingWidget.test.tsx[2m > [22mBookingWidget[2m > [22mignores an obsolete eligibility ineligible after a postal edit
-[31m[1mError[22m: [2mexpect([22m[31melement[31m[2m).not.toBeInTheDocument()[22m
+ FAIL  BookingWidget.test.tsx > BookingWidget > ignores an obsolete eligibility ineligible after a postal edit
+Error: expect(element).not.toBeInTheDocument()
 
-[31mexpected document not to contain element, found <p
+expected document not to contain element, found <p
   class="tf-field-error"
   id="tf-postal-error"
 >
   Obsolete coverage
-</p> instead[31m[39m
-[36m [2m❯[22m BookingWidget.test.tsx:[2m112:50[22m[39m
-    [90m110| [39m      expect(screen.getByText('Where can we help?')).toBeInTheDocument…
-    [90m111| [39m      [34mexpect[39m(postal)[33m.[39m[34mtoHaveValue[39m([32m'L5B 1M2'[39m)[33m;[39m
-    [90m112| [39m      [34mexpect[39m(screen[33m.[39m[34mqueryByText[39m([36m/Obsolete/[39m))[33m.[39mnot[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m   | [39m                                                 [31m^[39m
-    [90m113| [39m      expect(screen.getByRole('button', { name: /continue/i })).toBeEn…
-    [90m114| [39m    }[33m,[39m
+</p> instead
+ ❯ BookingWidget.test.tsx:112:50
+    110|       expect(screen.getByText('Where can we help?')).toBeInTheDocument…
+    111|       expect(postal).toHaveValue('L5B 1M2');
+    112|       expect(screen.queryByText(/Obsolete/)).not.toBeInTheDocument();
+       |                                                  ^
+    113|       expect(screen.getByRole('button', { name: /continue/i })).toBeEn…
+    114|     },
 
-[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
 
-[41m[1m FAIL [22m[49m BookingWidget.test.tsx[2m > [22mBookingWidget[2m > [22mignores an obsolete eligibility network error after a postal edit
-[31m[1mError[22m: [2mexpect([22m[31melement[31m[2m).not.toBeInTheDocument()[22m
+ FAIL  BookingWidget.test.tsx > BookingWidget > ignores an obsolete eligibility network error after a postal edit
+Error: expect(element).not.toBeInTheDocument()
 
-[31mexpected document not to contain element, found <div
+expected document not to contain element, found <div
   class="tf-form-alert"
   role="alert"
 >
   Obsolete failure
-</div> instead[31m[39m
-[36m [2m❯[22m BookingWidget.test.tsx:[2m112:50[22m[39m
-    [90m110| [39m      expect(screen.getByText('Where can we help?')).toBeInTheDocument…
-    [90m111| [39m      [34mexpect[39m(postal)[33m.[39m[34mtoHaveValue[39m([32m'L5B 1M2'[39m)[33m;[39m
-    [90m112| [39m      [34mexpect[39m(screen[33m.[39m[34mqueryByText[39m([36m/Obsolete/[39m))[33m.[39mnot[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m   | [39m                                                 [31m^[39m
-    [90m113| [39m      expect(screen.getByRole('button', { name: /continue/i })).toBeEn…
-    [90m114| [39m    }[33m,[39m
+</div> instead
+ ❯ BookingWidget.test.tsx:112:50
+    110|       expect(screen.getByText('Where can we help?')).toBeInTheDocument…
+    111|       expect(postal).toHaveValue('L5B 1M2');
+    112|       expect(screen.queryByText(/Obsolete/)).not.toBeInTheDocument();
+       |                                                  ^
+    113|       expect(screen.getByRole('button', { name: /continue/i })).toBeEn…
+    114|     },
 
-[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
 
 
-[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
-[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (7)[39m
-[2m   Start at [22m 10:36:08
-[2m   Duration [22m 2.18s[2m (transform 220ms, setup 340ms, collect 391ms, tests 289ms, environment 1.70s, prepare 338ms)[22m
-
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 failed | 4 passed (7)
+   Start at  10:36:08
+   Duration  2.18s (transform 220ms, setup 340ms, collect 391ms, tests 289ms, environment 1.70s, prepare 338ms)

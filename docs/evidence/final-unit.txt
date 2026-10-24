@@ -1,0 +1,12 @@
+npm notice run tradeflow@1.0.0 test
+npm notice run vitest run
+
+ RUN  v3.2.7 E:/C++ PROJECTS/TradeFlow/wordpress/wp-content/themes/tradeflow/assets/src
+
+ ✓ attribution.test.ts (2 tests) 15ms
+ ✓ BookingWidget.test.tsx (7 tests) 355ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  10:48:40
+   Duration  2.03s (transform 165ms, setup 262ms, collect 418ms, tests 370ms, environment 1.45s, prepare 330ms)

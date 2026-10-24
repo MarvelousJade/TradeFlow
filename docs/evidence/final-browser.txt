@@ -1,0 +1,17 @@
+npm notice run tradeflow@1.0.0 test:widget
+npm notice run playwright test --config playwright.widget.config.ts
+[WebServer] npm notice run tradeflow@1.0.0 demo
+[WebServer] npm notice run vite --config demo/vite.config.ts
+
+Running 8 tests using 6 workers
+
+  ok 6 [mobile] › tests\widget\booking.spec.ts:36:1 › read errors recover and outside coverage stays on address step (8.7s)
+  ok 2 [desktop] › tests\widget\booking.spec.ts:36:1 › read errors recover and outside coverage stays on address step (8.7s)
+  ok 5 [desktop] › tests\widget\booking.spec.ts:59:1 › edited address ignores an old approval in the browser (9.5s)
+  ok 4 [mobile] › tests\widget\booking.spec.ts:19:1 › demo completes with real widget and disposable API (10.3s)
+  ok 7 [mobile] › tests\widget\booking.spec.ts:59:1 › edited address ignores an old approval in the browser (1.7s)
+  ok 1 [desktop] › tests\widget\booking.spec.ts:19:1 › demo completes with real widget and disposable API (10.4s)
+  ok 3 [desktop] › tests\widget\booking.spec.ts:89:1 › failed submission and back navigation preserve the draft for retry (10.6s)
+  ok 8 [mobile] › tests\widget\booking.spec.ts:89:1 › failed submission and back navigation preserve the draft for retry (2.9s)
+
+  8 passed (17.4s)

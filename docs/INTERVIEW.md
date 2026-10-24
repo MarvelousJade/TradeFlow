@@ -39,13 +39,19 @@ TF-001 in [INVESTIGATIONS.md](INVESTIGATIONS.md) records discovery, reproduction
 - Playwright: real Chromium page, actual React/theme, disposable development HTTP API and route-injected failures; desktop and mobile emulation, not physical mobile hardware.
 - TypeScript and Vite build: static checking and production bundling, not integration correctness.
 - Existing WordPress E2E, PHP tests and Lighthouse remain separate. This environment lacks PHP/Docker; those checks were not performed for this release. No measured LCP, interaction latency, throughput or production capacity claim is made.
-- Browser tests were run programmatically, not by human interaction. No rendered visual inspection is claimed by the recorded passing counts.
+- Browser tests were run programmatically, not by human interaction. Final desktop/mobile success screenshots were separately inspected as rendered images: title, demo warning, success reference and three-stage summary were legible. This is not a comprehensive visual, accessibility, or cross-browser audit. Screenshots are regenerated under ignored `test-results/` by the completion test.
 
 ## Current verification
 
 Baseline source `b93463a`: 4 component tests passed, build and typecheck passed. After the eligibility fix: 9 passed, 0 failed (2.26 s). On the demo-stage working tree based on `8ed337f`: 8 browser cases passed, 0 failed/skipped (14.2 s), typecheck passed. See `docs/evidence/widget-browser.txt`. Node v22.23.3, Vitest 3.2.7, Playwright 1.62.0, Chromium 151.0.7922.34, React 19.2.8, Vite 7.3.6, Windows Git Bash. Browser binaries initially absent; `npx playwright install chromium` resolved setup. An initial JSON fixture import was incompatible with the runner's Node loader; a TypeScript fixture removed that dependency. These setup failures were not application defects.
 
-The script and CI changes are versioned with their tests; commit-specific final verification will be recorded after integration. Test counts are separate runs, never aggregated into a larger claim.
+Final integrated source `76e113b` on local main: clean `npm ci` succeeded; `npm test` 9 passed / 0 failed/skipped (2.03 s); typecheck passed; build passed (958 ms); widget browser suite 8 passed / 0 failed/skipped (17.4 s). See `docs/evidence/final-*.txt`. Final JS output 207.68 kB / gzip 65.31 kB, versus baseline 207.40 / 65.22 kB; this small bundle delta is not an end-user latency measurement. Test counts are separate runs, never aggregated into a larger claim.
+
+The final install also reported 31 dependency audit findings (2 low, 6 moderate, 20 high, 3 critical); `npm audit --omit=dev --json` reported zero. Dev tooling findings include Vite, Vitest and Lighthouse dependency chains; zero production npm findings is not proof of application security. Keep demo/dev servers loopback-only, use trusted test inputs, and prioritize a separately verified tooling upgrade. No force-fix or dependency changes were made. PHP/WordPress dependencies were not audited here.
+
+## Controlled debugging story
+
+TF-003 was deliberately introduced on `investigation/draft-reset` at `ee34f06`, not found in production. Starting from verified `0274395`, resetting `initialForm` inside submission failure handling erased the contact draft. A route-injected 503 reproduced an empty email while the correct error alert remained visible. One POST attempt and the expected alert argued against routing/automatic retry; inspection identified the catch-handler reset. Removing it restored behavior. The strengthened regression checks actual multipart fields on both attempts, not only the visible email. Repair `2a6ff59` stayed isolated; net coverage/evidence was squash-integrated as `873b484`, with no net widget change. This illustrates the difference between request cleanup and ownership of unsaved user data. See the full evidence and remaining risks in [INVESTIGATIONS.md](INVESTIGATIONS.md).
 
 ## Next improvements
 

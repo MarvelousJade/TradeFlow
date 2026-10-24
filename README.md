@@ -20,7 +20,7 @@ npm run demo
 
 Open `http://127.0.0.1:4173/demo/`. This runs the actual booking widget and theme styles against a **disposable development API**. Use Toronto postal code `M5V 2T6`, fictitious job/contact details, and the sample arrival window. Success shows `TF-DEMO`; nothing is saved and no email is sent. It is not a replacement for the WordPress backend.
 
-The widget ignores outdated eligibility responses after address edits, offers Retry loading on startup failure, and retains the in-memory draft after failed submission. Refreshing still discards the draft.
+The widget ignores outdated eligibility responses after address edits, offers Retry loading on startup failure, and retains the in-memory draft after failed submission. Refreshing still discards the draft. The demo is loopback-only and must not be used as a public server.
 
 ## Run locally
 
@@ -75,6 +75,7 @@ Follow [the Render and Aiven deployment guide](docs/DEPLOY_RENDER.md). Render ac
 
 ## Production notes
 
+- Current dependency audit reports 31 development-toolchain findings, including 3 critical; production-only npm audit reports zero. Upgrade and reverify tooling before exposing development services or accepting untrusted build/test input. See [verification notes](docs/INTERVIEW.md#current-verification). This is not a production-readiness certification.
 - Replace local credentials, enable HTTPS, configure SMTP, and set an explicit GA4/GTM container before launch.
 - Keep page caching disabled on `/wp-json/tradeflow/v1/*`; cache public pages at the edge.
 - Uploads use WordPress media handling, MIME allow-lists and size limits. Add malware scanning for higher-volume production use.

@@ -42,6 +42,14 @@ Bootstrap retry reruns the existing guarded Effect using an explicit attempt cou
 - Demo/browser stage: added development-only Vite HTTP middleware and synthetic fixture, separate from production build. Actual widget/theme run with desktop and Pixel 7 emulation; 8 passed / 0 failed in 14.2 s, typecheck passed. Tests cover empty postal, outside coverage, startup failure/retry, delayed approval after edit, successful request and draft-preserving retry. No WordPress calls or stored lead data. First runner setup exposed JSON import requirements and absent browser binaries; moved fixture to TypeScript and installed Chromium, then reran successfully.
 - Local main contains an existing merge commit (`fcf62c7`) not on the starting branch. Final integration must merge the completed feature branch into existing main, not reset it or rewrite history.
 
+## Integrated outcomes (2026-10-24)
+
+- `94ef7ef`: requirements/research; `8ed337f`: reproduced and fixed obsolete eligibility plus startup recovery; `0274395`: disposable demo and browser tests; `873b484`: strengthened retry payload regressions; `20bf3e3`: merge into existing main; `76e113b`: regenerate completion screenshots.
+- Controlled fault `ee34f06` was intentionally introduced and repaired (`2a6ff59`) on an isolated local branch. Targeted browser run failed on empty email. Only final coverage/evidence was squash-integrated; no net widget implementation change was claimed. `git merge-base --is-ancestor ee34f06 main` returned 1: faulty commit is not on main.
+- Final source `76e113b`: `npm ci` passed, 9 component tests passed (2.03 s), typecheck/build passed, 8 desktop/mobile browser cases passed (17.4 s), zero failures/skips. See `docs/evidence/final-*.txt`. Production output 207.68 kB / gzip 65.31 kB. Reviewed generated desktop/mobile success images; no complete visual or accessibility audit or human interaction claimed.
+- Final dependency review: 31 development-toolchain audit findings, including 3 critical; production-only npm audit zero. Tooling upgrade is a priority follow-up, not silently forced into this release. Loopback-only demo is not a deployment server. No PHP/WordPress audit was performed.
+- Credential filename/private-key/token-pattern checks found no matches among tracked files; this limited scan is not a security certification. Existing ignored `.tools`, reports, dependencies and output remain untracked. No licence was added on the owner's behalf. No remote push, tag or account operation performed.
+
 ## Verification approach
 
 Component tests isolate ordering using deferred promises, not sleep-based races. Browser tests run actual React modules and theme styles with route-controlled APIs in desktop and mobile Chromium. Keep raw run summaries in `docs/evidence/`; do not count separate runs as one suite. Existing WordPress integration and Lighthouse checks still require the documented Docker stack. No visual or human testing claim without explicit evidence.

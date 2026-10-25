@@ -1,0 +1,20 @@
+{
+  "name": "current-unit",
+  "command": [
+    "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+    "node_modules\\vitest\\vitest.mjs",
+    "run",
+    "--reporter=json",
+    "--outputFile",
+    "E:\\C++ PROJECTS\\TradeFlow\\docs\\evidence\\resume-impact-2026-10-25\\current-unit.json"
+  ],
+  "exitCode": 0,
+  "expectedExit": 0,
+  "matchedExpectation": true,
+  "elapsedMs": 2788
+}
+
+STDOUT
+JSON report written to E:/C++ PROJECTS/TradeFlow/docs/evidence/resume-impact-2026-10-25/current-unit.json
+
+STDERR

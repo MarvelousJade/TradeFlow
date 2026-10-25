@@ -1,0 +1,249 @@
+{
+  "started": "2026-10-25T22:24:00.000Z",
+  "current": "820764737187546c9737ca1c5aa54a8d3b151ae7",
+  "baseline": "b93463a20279519c91bdddc12d83bf2814c31edc",
+  "node": "v22.23.3",
+  "platform": "win32",
+  "architecture": "x64",
+  "cpu": "AMD Ryzen 5 3600 6-Core Processor              ",
+  "versions": {
+    "vitest": "3.2.7",
+    "react": "19.2.8",
+    "vite": "7.3.6",
+    "typescript": "5.9.3",
+    "@playwright/test": "1.62.0"
+  },
+  "workingTreeAtStart": "?? docs/RESUME_IMPACT.md\n?? scripts/measure-resume-impact.mjs\n",
+  "method": "Same current regression tests and installed dependencies in one temporary sandbox; only BookingWidget.tsx is replaced by its baseline version for the before run. Then verify the full current checkout separately. No dependencies installed.",
+  "testSha256": "818d7a19a503cbce54c2cf5fbadfed35096a5a013b35fd5394001ed690408229",
+  "baselineWidgetSha256": "ea6f2c305257cc84ed8fd8117b099f6aa15123d563bdcc4d9230edadaa04f7e9",
+  "currentWidgetSha256": "457428a16fbcc51e86268e2bc9ca7e5738ebcbda74f07ad128e0f0eeca7b58b1",
+  "raceComparisonVerified": true,
+  "finished": "2026-10-25T22:25:01.313Z",
+  "results": [
+    {
+      "name": "race-before",
+      "command": [
+        "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+        "node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "E:\\C++ PROJECTS\\TradeFlow\\.tools\\resume-impact\\run-xZ5tHA\\vite.config.ts",
+        "-t",
+        "ignores an obsolete eligibility",
+        "--reporter=json",
+        "--outputFile",
+        "E:\\C++ PROJECTS\\TradeFlow\\docs\\evidence\\resume-impact-2026-10-25\\race-before.json"
+      ],
+      "exitCode": 1,
+      "expectedExit": 1,
+      "matchedExpectation": true,
+      "elapsedMs": 20452,
+      "tests": {
+        "passed": 0,
+        "failed": 3,
+        "pending": 6,
+        "total": 9
+      },
+      "cases": [
+        {
+          "fullName": "campaign attribution captures and retains the first campaign touch",
+          "status": "skipped"
+        },
+        {
+          "fullName": "campaign attribution pushes GTM-compatible events",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget loads location-specific services and validates the postal code",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility success after a postal edit",
+          "status": "failed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility ineligible after a postal edit",
+          "status": "failed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility network error after a postal edit",
+          "status": "failed"
+        },
+        {
+          "fullName": "BookingWidget keeps the newer area check pending when an older request finishes",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget recovers from bootstrap failure with an explicit retry",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget continues after an eligible postal-code response",
+          "status": "skipped"
+        }
+      ]
+    },
+    {
+      "name": "race-after",
+      "command": [
+        "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+        "node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--config",
+        "E:\\C++ PROJECTS\\TradeFlow\\.tools\\resume-impact\\run-xZ5tHA\\vite.config.ts",
+        "-t",
+        "ignores an obsolete eligibility",
+        "--reporter=json",
+        "--outputFile",
+        "E:\\C++ PROJECTS\\TradeFlow\\docs\\evidence\\resume-impact-2026-10-25\\race-after.json"
+      ],
+      "exitCode": 0,
+      "expectedExit": 0,
+      "matchedExpectation": true,
+      "elapsedMs": 2591,
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "pending": 6,
+        "total": 9
+      },
+      "cases": [
+        {
+          "fullName": "campaign attribution captures and retains the first campaign touch",
+          "status": "skipped"
+        },
+        {
+          "fullName": "campaign attribution pushes GTM-compatible events",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget loads location-specific services and validates the postal code",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility success after a postal edit",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility ineligible after a postal edit",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility network error after a postal edit",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget keeps the newer area check pending when an older request finishes",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget recovers from bootstrap failure with an explicit retry",
+          "status": "skipped"
+        },
+        {
+          "fullName": "BookingWidget continues after an eligible postal-code response",
+          "status": "skipped"
+        }
+      ]
+    },
+    {
+      "name": "current-unit",
+      "command": [
+        "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+        "node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--reporter=json",
+        "--outputFile",
+        "E:\\C++ PROJECTS\\TradeFlow\\docs\\evidence\\resume-impact-2026-10-25\\current-unit.json"
+      ],
+      "exitCode": 0,
+      "expectedExit": 0,
+      "matchedExpectation": true,
+      "elapsedMs": 2788,
+      "tests": {
+        "passed": 9,
+        "failed": 0,
+        "pending": 0,
+        "total": 9
+      },
+      "cases": [
+        {
+          "fullName": "campaign attribution captures and retains the first campaign touch",
+          "status": "passed"
+        },
+        {
+          "fullName": "campaign attribution pushes GTM-compatible events",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget loads location-specific services and validates the postal code",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility success after a postal edit",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility ineligible after a postal edit",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget ignores an obsolete eligibility network error after a postal edit",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget keeps the newer area check pending when an older request finishes",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget recovers from bootstrap failure with an explicit retry",
+          "status": "passed"
+        },
+        {
+          "fullName": "BookingWidget continues after an eligible postal-code response",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "name": "current-typecheck",
+      "command": [
+        "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+        "node_modules\\typescript\\bin\\tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "expectedExit": 0,
+      "matchedExpectation": true,
+      "elapsedMs": 7015
+    },
+    {
+      "name": "current-build",
+      "command": [
+        "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+        "node_modules\\vite\\bin\\vite.js",
+        "build"
+      ],
+      "exitCode": 0,
+      "expectedExit": 0,
+      "matchedExpectation": true,
+      "elapsedMs": 1795
+    },
+    {
+      "name": "current-browser",
+      "command": [
+        "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+        "node_modules\\@playwright\\test\\cli.js",
+        "test",
+        "--config",
+        "playwright.widget.config.ts",
+        "--reporter=list,json"
+      ],
+      "exitCode": 0,
+      "expectedExit": 0,
+      "matchedExpectation": true,
+      "elapsedMs": 26424
+    }
+  ]
+}

@@ -71,6 +71,7 @@ Follow [the Render and Aiven deployment guide](docs/DEPLOY_RENDER.md). Render ac
 - [Purpose, acceptance criteria, references, architecture and journal](docs/ENGINEERING.md)
 - [Defect investigations and regression evidence](docs/INVESTIGATIONS.md)
 - [Walkthrough, verification and interview guide](docs/INTERVIEW.md)
+- [Measured resume impact and reproducible evidence](docs/RESUME_IMPACT.md)
 - [Changelog](CHANGELOG.md)
 
 ## Production notes

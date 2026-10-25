@@ -1,0 +1,24 @@
+{
+  "name": "race-before",
+  "command": [
+    "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+    "node_modules\\vitest\\vitest.mjs",
+    "run",
+    "--config",
+    "E:\\C++ PROJECTS\\TradeFlow\\.tools\\resume-impact\\run-xZ5tHA\\vite.config.ts",
+    "-t",
+    "ignores an obsolete eligibility",
+    "--reporter=json",
+    "--outputFile",
+    "E:\\C++ PROJECTS\\TradeFlow\\docs\\evidence\\resume-impact-2026-10-25\\race-before.json"
+  ],
+  "exitCode": 1,
+  "expectedExit": 1,
+  "matchedExpectation": true,
+  "elapsedMs": 20452
+}
+
+STDOUT
+JSON report written to E:/C++ PROJECTS/TradeFlow/docs/evidence/resume-impact-2026-10-25/race-before.json
+
+STDERR

@@ -1,0 +1,16 @@
+{
+  "name": "current-typecheck",
+  "command": [
+    "C:\\Users\\FanSh\\AppData\\Local\\pi-node\\current\\node.exe",
+    "node_modules\\typescript\\bin\\tsc",
+    "--noEmit"
+  ],
+  "exitCode": 0,
+  "expectedExit": 0,
+  "matchedExpectation": true,
+  "elapsedMs": 7015
+}
+
+STDOUT
+
+STDERR

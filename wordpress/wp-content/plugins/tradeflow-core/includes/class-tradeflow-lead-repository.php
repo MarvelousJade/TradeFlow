@@ -51,6 +51,7 @@ final class TradeFlow_Lead_Repository
             'utm_term' => $data['utm_term'] ?? '',
             'gclid' => $data['gclid'] ?? '',
             'dedupe_key' => $dedupe_key,
+            'idempotency_key' => ($data['idempotency_key'] ?? '') !== '' ? $data['idempotency_key'] : null,
             'created_at' => $now,
             'updated_at' => $now,
         ]);
@@ -60,6 +61,11 @@ final class TradeFlow_Lead_Repository
         if (!$inserted) {
             $this->db->query('ROLLBACK');
             if (str_contains(strtolower($insert_error), 'duplicate')) {
+                // A concurrent attempt with the same key may have won the race.
+                $replay = $this->replay_for_key((string) ($data['idempotency_key'] ?? ''), $data);
+                if ($replay !== null) {
+                    return $replay;
+                }
                 return new WP_Error(
                     'duplicate_lead',
                     __('We already received this request today. Check your email for the confirmation or call us if the details changed.', 'tradeflow'),
@@ -105,6 +111,46 @@ final class TradeFlow_Lead_Repository
             'token' => $token,
             'status' => 'new',
             'appointment_id' => $appointment_id,
+        ];
+    }
+
+    /**
+     * Result of an earlier submission that used this idempotency key: its original
+     * reference when the details match, a conflict error when they changed, or null
+     * when the key is empty or unknown.
+     */
+    public function replay_for_key(string $key, array $data): array|WP_Error|null
+    {
+        if ($key === '') {
+            return null;
+        }
+        $sql = $this->db->prepare(
+            "SELECT id, reference, public_token, status, appointment_id, dedupe_key, created_at
+             FROM {$this->leads_table} WHERE idempotency_key = %s",
+            $key
+        );
+        $lead = $this->db->get_row($sql, ARRAY_A);
+        if (!$lead) {
+            return null;
+        }
+
+        // Compare in the original day bucket so a retry after midnight still matches.
+        $expected = TradeFlow_Validator::dedupe_key($data, substr((string) $lead['created_at'], 0, 10));
+        if (!hash_equals((string) $lead['dedupe_key'], $expected)) {
+            return new WP_Error(
+                'idempotency_conflict',
+                __('We already received an earlier version of this request. Call us if the contact details, service or area need to change.', 'tradeflow'),
+                ['status' => 409]
+            );
+        }
+
+        return [
+            'id' => (int) $lead['id'],
+            'reference' => $lead['reference'],
+            'token' => $lead['public_token'],
+            'status' => $lead['status'],
+            'appointment_id' => (int) $lead['appointment_id'],
+            'replayed' => true,
         ];
     }
 

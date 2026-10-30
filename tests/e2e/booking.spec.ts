@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type APIRequestContext } from '@playwright/test';
 
 test('public homepage renders its booking entry point cleanly', async ({
   page,
@@ -106,6 +106,52 @@ test('duplicate requests receive a clear conflict message', async ({ request }) 
   expect((await second.json()).code).toBe('duplicate_lead');
 });
 
+test('a retry with the same idempotency key replays the original reference', async ({ request }) => {
+  const { fields, nonce } = await idempotentBooking(request);
+
+  const first = await request.post('/wp-json/tradeflow/v1/leads', {
+    multipart: fields,
+    headers: { 'X-WP-Nonce': nonce },
+  });
+  expect(first.status()).toBe(201);
+  const original = await first.json();
+
+  // A stored retry would get a new reference, so matching both fields shows no new row.
+  const retry = await request.post('/wp-json/tradeflow/v1/leads', {
+    multipart: fields,
+    headers: { 'X-WP-Nonce': nonce },
+  });
+  expect(retry.status()).toBe(200);
+  const replayed = await retry.json();
+  expect(replayed.reference).toBe(original.reference);
+  expect(replayed.statusUrl).toBe(original.statusUrl);
+});
+
+test('a retry with the same key but changed contact details is refused', async ({ request }) => {
+  const { fields, nonce } = await idempotentBooking(request);
+
+  const first = await request.post('/wp-json/tradeflow/v1/leads', {
+    multipart: fields,
+    headers: { 'X-WP-Nonce': nonce },
+  });
+  expect(first.status()).toBe(201);
+
+  const changed = { ...fields, email: `changed-${crypto.randomUUID()}@example.test` };
+  const conflict = await request.post('/wp-json/tradeflow/v1/leads', {
+    multipart: changed,
+    headers: { 'X-WP-Nonce': nonce },
+  });
+  expect(conflict.status()).toBe(409);
+  expect((await conflict.json()).code).toBe('idempotency_conflict');
+
+  // Had the refused attempt been stored, these details would now be a duplicate.
+  const fresh = await request.post('/wp-json/tradeflow/v1/leads', {
+    multipart: { ...changed, idempotency_key: crypto.randomUUID() },
+    headers: { 'X-WP-Nonce': nonce },
+  });
+  expect(fresh.status()).toBe(201);
+});
+
 test('staff can assign a technician and update lead status', async ({
   page,
   request,
@@ -164,3 +210,23 @@ test('staff can assign a technician and update lead status', async ({
       .locator('.tf-status', { hasText: 'Assigned' }),
   ).toBeVisible();
 });
+
+async function idempotentBooking(request: APIRequestContext) {
+  const bootstrapResponse = await request.get('/wp-json/tradeflow/v1/bootstrap?service=drain-repair&area=toronto');
+  const bootstrap = await bootstrapResponse.json();
+  return {
+    nonce: bootstrap.nonce as string,
+    fields: {
+      customer_name: 'Retry Test',
+      email: `retry-${crypto.randomUUID()}@example.test`,
+      phone: '4165550144',
+      service_id: String(bootstrap.services[0].id),
+      area_id: String(bootstrap.areas.find((area: { slug: string }) => area.slug === 'toronto').id),
+      postal_code: 'M5V2T6',
+      details: 'A retry test request with enough detail to pass validation.',
+      slot_start: bootstrap.slots[0].start,
+      slot_end: bootstrap.slots[0].end,
+      idempotency_key: crypto.randomUUID(),
+    },
+  };
+}

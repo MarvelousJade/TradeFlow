@@ -47,6 +47,19 @@ final class ValidatorTest extends TestCase
         );
     }
 
+    public function testIdempotencyKeysAcceptOnlyUuidV4(): void
+    {
+        self::assertSame(
+            '3f0c2a52-6a8e-4c4b-9d1e-0b9f5e7a2c11',
+            TradeFlow_Validator::normalize_idempotency_key(' 3F0C2A52-6A8E-4C4B-9D1E-0B9F5E7A2C11 ')
+        );
+        self::assertSame('', TradeFlow_Validator::normalize_idempotency_key(''));
+        self::assertSame('', TradeFlow_Validator::normalize_idempotency_key('not-a-key'));
+        // Version 1 UUID and SQL-looking input are rejected, not stored.
+        self::assertSame('', TradeFlow_Validator::normalize_idempotency_key('3f0c2a52-6a8e-1c4b-9d1e-0b9f5e7a2c11'));
+        self::assertSame('', TradeFlow_Validator::normalize_idempotency_key("3f0c2a52-6a8e-4c4b-9d1e-0b9f5e7a2c11' OR 1=1"));
+    }
+
     public function testRequiredBookingFieldsAreValidated(): void
     {
         $errors = TradeFlow_Validator::validate([

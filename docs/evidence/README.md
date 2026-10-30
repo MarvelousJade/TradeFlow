@@ -2,6 +2,8 @@
 
 ## Latest controlled measurement
 
+[2026-10-29 idempotent retry](idempotent-retry-2026-10-29/README.md): the two new WordPress E2E tests for server replay and `idempotency_conflict` fail with the REST controller fix reverted and pass with it restored. A separate `/verify` run is recorded, including PHP and E2E.
+
 [2026-10-25 resume-impact measurement](resume-impact-2026-10-25/README.md): same three stale-response cases fail on the baseline widget and pass on the current widget; separate current checks record 9 unit/component passes, 8 browser passes, typecheck and build success. Includes raw JSON/text logs and a reproducible runner. These are controlled engineering results, not measured business outcomes. The historical captures below remain unchanged.
 
 Reviewed 2026-10-24. Text captures retain tool output and failures; terminal ANSI color sequences and trailing whitespace were removed for readability in the final documentation stage. Counts/timings/assertions are unchanged. Do not combine separate run totals.

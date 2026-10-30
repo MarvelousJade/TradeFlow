@@ -86,6 +86,54 @@ test('edited address ignores an old approval in the browser', async ({
   await expect(page.getByText('Old approval')).toHaveCount(0);
 });
 
+test('retry after a lost response returns the original reference', async ({
+  page,
+}) => {
+  // Stands in for the server: the first attempt is stored, then the
+  // connection drops before the customer sees the response.
+  const stored = new Map<string, string>();
+  const keys: string[] = [];
+  await page.route('**/demo-api/leads', async (route) => {
+    const body = route.request().postData() ?? '';
+    const key = /name="idempotency_key"\r\n\r\n([^\r]*)\r\n/.exec(body)?.[1] ?? '';
+    keys.push(key);
+    // Like the plugin, a missing key gets no replay, only the daily duplicate rule.
+    const original = key ? stored.get(key) : undefined;
+    if (original) {
+      await route.fulfill({
+        status: 200,
+        json: { reference: original, status: 'new', statusUrl: '', message: 'Your request is in.' },
+      });
+    } else if (stored.size > 0) {
+      await route.fulfill({
+        status: 409,
+        json: { message: 'We already received this request today.' },
+      });
+    } else {
+      stored.set(key, 'TF-ORIGINAL');
+      await route.abort('connectionreset');
+    }
+  });
+  await page.goto('/demo/');
+  await contactStep(page);
+  await page.getByRole('button', { name: 'Send request' }).click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'We could not send the request. Please try again.',
+  );
+  expect(keys).toHaveLength(1); // Still no automatic retry.
+
+  await page.getByRole('button', { name: 'Send request' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Your request is in.' }),
+  ).toBeVisible();
+  await expect(page.getByText('TF-ORIGINAL', { exact: true })).toBeVisible();
+  expect(keys).toHaveLength(2);
+  expect(keys[0]).toMatch(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+  );
+  expect(keys[1]).toBe(keys[0]);
+});
+
 test('failed submission and back navigation preserve the draft for retry', async ({
   page,
 }) => {

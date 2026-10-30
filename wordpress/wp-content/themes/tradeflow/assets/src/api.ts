@@ -58,10 +58,31 @@ export async function checkEligibility(
   return parsedResponse(response);
 }
 
+// One key per draft lets the server recognise a retry of a submission it already
+// stored (response lost in transit) and return the original reference.
+export function newIdempotencyKey(): string {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  // randomUUID needs a secure context; build a v4 UUID from random bytes instead.
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0'));
+  return [
+    hex.slice(0, 4),
+    hex.slice(4, 6),
+    hex.slice(6, 8),
+    hex.slice(8, 10),
+    hex.slice(10, 16),
+  ]
+    .map((group) => group.join(''))
+    .join('-');
+}
+
 export async function submitBooking(
   form: BookingForm,
   nonce: string,
   attribution: Attribution,
+  idempotencyKey: string,
 ): Promise<BookingResponse> {
   if (!form.slot) {
     throw new BookingApiError('Choose an appointment window.', 422, {
@@ -81,6 +102,7 @@ export async function submitBooking(
     slot_start: form.slot.start,
     slot_end: form.slot.end,
     website: form.website,
+    idempotency_key: idempotencyKey,
     ...attribution,
   };
   Object.entries(values).forEach(([key, value]) => body.append(key, value));

@@ -18,6 +18,13 @@ final class TradeFlow_Validator
         return (string) preg_replace('/\D+/', '', $phone);
     }
 
+    /** Returns the lowercase UUID v4, or '' when the value is missing or malformed. */
+    public static function normalize_idempotency_key(string $key): string
+    {
+        $key = strtolower(trim($key));
+        return preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $key) ? $key : '';
+    }
+
     public static function postal_code_is_eligible(string $postal_code, string $prefix_list): bool
     {
         $normalized = self::normalize_postal_code($postal_code);

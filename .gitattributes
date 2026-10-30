@@ -1,4 +1,6 @@
 # Evidence hashes use normalized LF bytes on every checkout.
-docs/evidence/*.txt text eol=lf
-docs/evidence/*.json text eol=lf
+# `**/` also matches the top level, so dated subfolders are covered.
+docs/evidence/**/*.txt text eol=lf
+docs/evidence/**/*.json text eol=lf
+docs/evidence/**/*.md text eol=lf
 docs/evidence/SHA256SUMS text eol=lf

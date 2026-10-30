@@ -52,4 +52,43 @@ Bootstrap retry reruns the existing guarded Effect using an explicit attempt cou
 
 ## Verification approach
 
-Component tests isolate ordering using deferred promises, not sleep-based races. Browser tests run actual React modules and theme styles with route-controlled APIs in desktop and mobile Chromium. Keep raw run summaries in `docs/evidence/`; do not count separate runs as one suite. Existing WordPress integration and Lighthouse checks still require the documented Docker stack. No visual or human testing claim without explicit evidence.
+Component tests isolate ordering using deferred promises, not sleep-based races. Browser tests run actual React modules and theme styles with route-controlled APIs in desktop and mobile Chromium. Keep raw run summaries in `docs/evidence/`; do not count separate runs as one suite. PHPUnit and PHP lint run locally on PHP 8.3, the same version as CI. WordPress integration tests (`tests/e2e/`) run locally against the documented Docker stack. Lighthouse CI runs only in CI. No visual or human testing claim without explicit evidence.
+
+## Idempotent booking retry (2026-10-29)
+
+### Problem
+
+A submission can be stored by the server while the response is lost (network drop, proxy 503 after commit). The widget keeps the draft and offers a manual retry, as intended. That retry then hits the daily `dedupe_key` constraint and receives `409 duplicate_lead`: the customer sees an error and never gets their reference, although the booking exists. Client tests and PHP tests each pass because neither exercises the two halves together.
+
+### Decisions
+
+- The widget creates one random idempotency key (UUID v4) per draft and sends it as `idempotency_key` on every submission attempt of that draft. It is not derived from personal data. Success ends the draft; unmount discards it, as before.
+- The key is kept when the customer edits fields between attempts. The server, not the client, decides whether a stored attempt matches.
+- Server: a known key with the same `dedupe_key` replays the original result (`200`, original reference and status URL). No new row, no second confirmation email, no photo upload. A known key with a different `dedupe_key` (contact, service or area changed) returns `409 idempotency_conflict` telling the customer an earlier version was received. No new row.
+- Missing or malformed key: previous behaviour, so cached older widget scripts keep working.
+- A concurrent duplicate insert that loses the unique-index race re-reads by key and replays.
+- Schema: nullable unique `idempotency_key` column. Plugin version bumps to 1.1.0, and `plugins_loaded` re-runs `dbDelta` when the stored DB version differs, so existing installs gain the column without reactivation.
+- Still no automatic retry of writes.
+
+### Acceptance criteria
+
+1. Every attempt within one draft sends the same valid UUID key. (component test)
+2. Accepted-but-lost submission, then manual retry: success screen with the original reference, no error, exactly two requests. (browser test with a route that remembers keys)
+3. Same key and same details: `200` replay, no insert, no email. (E2E test for replay and no insert; no email by review only)
+4. Same key, changed contact, service or area: `409 idempotency_conflict`, no insert. (E2E test)
+5. Missing or invalid key: unchanged behaviour. (validator unit test, plus the E2E duplicate test for the no-key path)
+6. Existing installs migrate on upgrade. (code review; needs an upgrade run on a WordPress stack to prove)
+
+Outside scope: key expiry or cleanup policy, server-side storage of the full response body, and changing the daily dedupe rule.
+
+### Verification (2026-10-29, branch `feature/idempotent-retry`)
+
+- Baseline before changes: typecheck passed, 9 component tests, 8 browser cases passed.
+- After: typecheck and build passed (JS 208.07 kB / gzip 65.49 kB); 12 component tests passed (3 new in `api.test.ts`); 10 browser cases passed (new desktop and mobile "retry after a lost response returns the original reference").
+- The new browser test was run with only the client change reverted: 2 of 2 failed (success screen never appeared because the retry got 409). With the change restored, both passed.
+- First pass: PHP and Docker were unavailable, so criteria 3–6 were reviewed, not executed. Superseded by the next entry.
+- Local PHP and WordPress run (PHP 8.3.36, Composer 2.11.0, Docker Desktop 29.9.2, fresh stack from `docker-compose.yml`): `composer test` 5 tests / 19 assertions passed, including `testIdempotencyKeysAcceptOnlyUuidV4`. PHP lint 0 errors in 18 files. `tests/e2e/` in Chromium 4 passed; mobile 3 passed and 1 skipped (the admin test skips itself on mobile by design). Criterion 5 is now executed.
+- Added two WordPress E2E tests for criteria 3 and 4 (`tests/e2e/booking.spec.ts`). With only the REST controller's replay block stashed, both failed in Chromium: the replay retry got `409` and the changed retry was stored with `201`. Restored, both passed. Full `/verify` then passed, including E2E in Chromium (6 passed). Evidence: `docs/evidence/idempotent-retry-2026-10-29/`.
+- Still not verified: "no second email" (local mail goes to the container's debug log, which the tests can't read) and the race fallback. The stack was a fresh install, so the `dbDelta` upgrade path (criterion 6) is not proven. Lighthouse CI was not run.
+- Known gap: if two attempts with the same key race, the losing request has already uploaded its photos before the insert fails. It returns the correct replay, but those uploads are orphaned. This belongs with the existing upload-rollback follow-up.
+- `npm run format:check` already reported 11 files before this change (the repo has no Prettier config and uses single quotes). It was not changed here.

@@ -1,0 +1,48 @@
+
+
+Running 2 tests using 2 workers
+
+  x  1 [chromium] › tests\e2e\booking.spec.ts:109:1 › a retry with the same idempotency key replays the original reference (327ms)
+  x  2 [chromium] › tests\e2e\booking.spec.ts:130:1 › a retry with the same key but changed contact details is refused (328ms)
+
+
+  1) [chromium] › tests\e2e\booking.spec.ts:109:1 › a retry with the same idempotency key replays the original reference
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 409
+
+      122 |     headers: { 'X-WP-Nonce': nonce },
+      123 |   });
+    > 124 |   expect(retry.status()).toBe(200);
+          |                          ^
+      125 |   const replayed = await retry.json();
+      126 |   expect(replayed.reference).toBe(original.reference);
+      127 |   expect(replayed.statusUrl).toBe(original.statusUrl);
+        at E:\C++ PROJECTS\TradeFlow\tests\e2e\booking.spec.ts:124:26
+
+    Error Context: test-results\booking-a-retry-with-the-s-f2714-lays-the-original-reference-chromium\error-context.md
+
+  2) [chromium] › tests\e2e\booking.spec.ts:130:1 › a retry with the same key but changed contact details is refused
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 409
+    Received: 201
+
+      142 |     headers: { 'X-WP-Nonce': nonce },
+      143 |   });
+    > 144 |   expect(conflict.status()).toBe(409);
+          |                             ^
+      145 |   expect((await conflict.json()).code).toBe('idempotency_conflict');
+      146 |
+      147 |   // Had the refused attempt been stored, these details would now be a duplicate.
+        at E:\C++ PROJECTS\TradeFlow\tests\e2e\booking.spec.ts:144:29
+
+    Error Context: test-results\booking-a-retry-with-the-s-1d237--contact-details-is-refused-chromium\error-context.md
+
+  2 failed
+    [chromium] › tests\e2e\booking.spec.ts:109:1 › a retry with the same idempotency key replays the original reference
+    [chromium] › tests\e2e\booking.spec.ts:130:1 › a retry with the same key but changed contact details is refused
+

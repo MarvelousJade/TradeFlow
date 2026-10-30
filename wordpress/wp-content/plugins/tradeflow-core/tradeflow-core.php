@@ -2,7 +2,7 @@
 /**
  * Plugin Name: TradeFlow Core
  * Description: Service areas, bookings, attribution, staff workflow, and Elementor integration for TradeFlow.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: TradeFlow
  * Requires at least: 6.5
  * Requires PHP: 8.1
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('TRADEFLOW_VERSION', '1.0.0');
+define('TRADEFLOW_VERSION', '1.1.0');
 define('TRADEFLOW_FILE', __FILE__);
 define('TRADEFLOW_PATH', plugin_dir_path(__FILE__));
 define('TRADEFLOW_URL', plugin_dir_url(__FILE__));
@@ -30,6 +30,7 @@ register_activation_hook(__FILE__, ['TradeFlow_Installer', 'activate']);
 register_deactivation_hook(__FILE__, ['TradeFlow_Installer', 'deactivate']);
 
 add_action('plugins_loaded', static function (): void {
+    TradeFlow_Installer::maybe_upgrade();
     TradeFlow_Post_Types::init();
     TradeFlow_REST_Controller::init();
     TradeFlow_Admin::init();

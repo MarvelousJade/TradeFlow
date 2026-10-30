@@ -13,3 +13,6 @@ acd90da1d135a8c5e988c2c42344bbadd54ff1e0767c6e58f683929a48b0b066 *docs/evidence/
 2e0c3e6e7380051ce73bef73c5f7a8cc39f2b3aff098d85a5dad3982bb1319cb *docs/evidence/widget-browser.txt
 cf5da64098e3c3112fc83b74e7dfca2df529fb33152f595d1d62365950cd34c4 *docs/evidence/audit-production.json
 1ea4fd4be5e835a644e49dcff2b95bed8d91975f05dcd241a746bc6bb32cd934 *docs/evidence/audit-summary.json
+e777b3f7cd0cfdcdb6816f2e19c90ded0d38b841f6a6e176f8e18897fbef243b *docs/evidence/idempotent-retry-2026-10-29/README.md
+c98193ce893f4984bb99cae28e9be56f277a0f5dfba7402c69bdbd9be1a06a77 *docs/evidence/idempotent-retry-2026-10-29/failing.txt
+29b5736f51a0c2426a11d1b7dada6b5481d3d8df984de2ed17073e127de4f12f *docs/evidence/idempotent-retry-2026-10-29/passing.txt

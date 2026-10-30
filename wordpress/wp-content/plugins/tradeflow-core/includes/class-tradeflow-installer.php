@@ -16,6 +16,16 @@ final class TradeFlow_Installer
         flush_rewrite_rules();
     }
 
+    // Plugin updates do not re-run activation, so apply schema changes here.
+    public static function maybe_upgrade(): void
+    {
+        if (get_option('tradeflow_db_version') === TRADEFLOW_VERSION) {
+            return;
+        }
+        self::create_tables();
+        update_option('tradeflow_db_version', TRADEFLOW_VERSION);
+    }
+
     public static function deactivate(): void
     {
         flush_rewrite_rules();
@@ -54,12 +64,14 @@ final class TradeFlow_Installer
             utm_term varchar(190) NOT NULL DEFAULT '',
             gclid varchar(190) NOT NULL DEFAULT '',
             dedupe_key char(64) NOT NULL,
+            idempotency_key char(36) NULL,
             created_at datetime NOT NULL,
             updated_at datetime NOT NULL,
             PRIMARY KEY  (id),
             UNIQUE KEY reference (reference),
             UNIQUE KEY public_token (public_token),
             UNIQUE KEY dedupe_key (dedupe_key),
+            UNIQUE KEY idempotency_key (idempotency_key),
             KEY status_created (status, created_at),
             KEY service_area (service_id, area_id)
         ) {$charset};");

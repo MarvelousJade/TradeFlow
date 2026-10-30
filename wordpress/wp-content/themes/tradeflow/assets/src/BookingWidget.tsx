@@ -3,6 +3,7 @@ import {
   BookingApiError,
   checkEligibility,
   fetchBootstrap,
+  newIdempotencyKey,
   submitBooking,
 } from './api';
 import { getAttribution, trackEvent } from './attribution';
@@ -53,6 +54,8 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
   const [result, setResult] = useState<BookingResponse | null>(null);
   const started = useRef(false);
   const eligibilityRevision = useRef(0);
+  // Reused by every submission attempt of this draft, including after edits.
+  const idempotencyKey = useRef<string | null>(null);
   const [bootstrapAttempt, setBootstrapAttempt] = useState(0);
 
   useEffect(() => {
@@ -208,7 +211,13 @@ export function BookingWidget({ serviceSlug, areaSlug, heading }: Props) {
     setSubmitting(true);
     setError('');
     try {
-      const response = await submitBooking(form, data.nonce, getAttribution());
+      idempotencyKey.current ??= newIdempotencyKey();
+      const response = await submitBooking(
+        form,
+        data.nonce,
+        getAttribution(),
+        idempotencyKey.current,
+      );
       setResult(response);
       trackEvent('tradeflow_booking_complete', {
         reference: response.reference,

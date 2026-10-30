@@ -196,6 +196,15 @@ final class TradeFlow_REST_Controller
             );
         }
 
+        // A retry of a stored submission returns the original result before any
+        // upload, insert or email happens.
+        $repository = new TradeFlow_Lead_Repository();
+        $data['idempotency_key'] = TradeFlow_Validator::normalize_idempotency_key((string) $request->get_param('idempotency_key'));
+        $replay = $repository->replay_for_key($data['idempotency_key'], $data);
+        if ($replay !== null) {
+            return is_wp_error($replay) ? $replay : self::lead_created_response($replay);
+        }
+
         $photo_ids = self::handle_photos();
         if (is_wp_error($photo_ids)) {
             return $photo_ids;
@@ -209,19 +218,25 @@ final class TradeFlow_REST_Controller
                 : sanitize_text_field($value);
         }
 
-        $repository = new TradeFlow_Lead_Repository();
         $lead = $repository->create($data);
         if (is_wp_error($lead)) {
             return $lead;
         }
 
-        TradeFlow_Notifications::send_confirmation(array_merge($data, $lead));
+        if (empty($lead['replayed'])) {
+            TradeFlow_Notifications::send_confirmation(array_merge($data, $lead));
+        }
+        return self::lead_created_response($lead);
+    }
+
+    private static function lead_created_response(array $lead): WP_REST_Response
+    {
         return new WP_REST_Response([
             'reference' => $lead['reference'],
             'status' => $lead['status'],
             'statusUrl' => rest_url(self::NAMESPACE . '/leads/' . $lead['token']),
             'message' => __('Your request is in. We will email you after a staff member confirms the appointment.', 'tradeflow'),
-        ], 201);
+        ], empty($lead['replayed']) ? 201 : 200);
     }
 
     public static function eligibility(WP_REST_Request $request): WP_REST_Response|WP_Error
